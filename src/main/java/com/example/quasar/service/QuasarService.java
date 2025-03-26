@@ -1,15 +1,21 @@
 package com.example.quasar.service;
 
 import com.example.quasar.model.Position;
-import com.example.quasar.model.SatelliteData;
-import com.example.quasar.model.SatelliteData;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
+import com.lemmingapex.trilateration.TrilaterationFunction;
+import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class QuasarService {
+
+    private static final Logger logger = LoggerFactory.getLogger(QuasarService.class);
 
     // Coordenadas conocidas de los satélites (según reto)
     private final Position kenobiPos = new Position(-500f, -200f);
@@ -21,7 +27,7 @@ public class QuasarService {
      * Se utiliza una aproximación mediante trilateración.
      */
     public Position getLocation(List<?> satellites) {
-        // Extraer distancias basadas en el nombre (compatibilidad para Satellite y SatelliteData)
+    	logger.info("Iniciando cálculo de ubicación con {} satélites", satellites.size());
         Float dKenobi = null, dSkywalker = null, dSato = null;
         for (Object s : satellites) {
             String name = "";
@@ -46,18 +52,28 @@ public class QuasarService {
         if (dKenobi == null || dSkywalker == null || dSato == null) {
             return null;
         }
+        
+        
+        
 
         // Coordenadas de cada satélite
-        float x1 = kenobiPos.getX(), y1 = kenobiPos.getY();
-        float x2 = skywalkerPos.getX(), y2 = skywalkerPos.getY();
-        float x3 = satoPos.getX(), y3 = satoPos.getY();
+        double[] x1 = {kenobiPos.getX(), kenobiPos.getY()};
+        double[] x2 = {skywalkerPos.getX(), skywalkerPos.getY()};
+        double[] x3 = {satoPos.getX(), satoPos.getY()};
+        
+        double[][] positions = {x1,x2,x3};
 
-        float d1 = dKenobi;
-        float d2 = dSkywalker;
-        float d3 = dSato;
+        double d1 = dKenobi;
+        double d2 = dSkywalker;
+        double d3 = dSato;
+        
+        double[] distances = {d1,d2,d3};
+        
+        TrilaterationFunction trilaterationFunction = new TrilaterationFunction(positions, distances);
+        NonLinearLeastSquaresSolver nSolver = new NonLinearLeastSquaresSolver(trilaterationFunction, new LevenbergMarquardtOptimizer());
 
-        // Resolver el sistema de dos ecuaciones lineales:
-        float A = 2 * (x2 - x1);
+        
+   /*     float A = 2 * (x2 - x1);
         float B = 2 * (y2 - y1);
         float C = (float) (Math.pow(d1, 2) - Math.pow(d2, 2) - Math.pow(x1, 2) + Math.pow(x2, 2) - Math.pow(y1, 2) + Math.pow(y2, 2));
 
@@ -70,8 +86,15 @@ public class QuasarService {
             return null;
         }
         float x = (C * E - B * F) / denominator;
-        float y = (A * F - C * D) / denominator;
+        float y = (A * F - C * D) / denominator;*/
+        
+        logger.debug("Ubicación calculada: x={}, y={}", nSolver.solve().getPoint().toArray());
 
+        double[] points = nSolver.solve().getPoint().toArray();
+        
+        float x = (float)points[0];
+        float y = (float)points[1];
+        
         return new Position(x, y);
     }
 
@@ -79,7 +102,9 @@ public class QuasarService {
      * Reconstruye el mensaje a partir de los arreglos de palabras.
      */
     public String getMessage(List<List<String>> messages) {
+    	logger.info("Iniciando reconstrucción del mensaje");
         if (messages == null || messages.isEmpty()) {
+        	logger.error("No se recibieron mensajes válidos para reconstrucción");
             return null;
         }
         int maxLength = messages.stream().mapToInt(List::size).max().orElse(0);
@@ -96,6 +121,8 @@ public class QuasarService {
                 result.add(word);
             }
         }
-        return String.join(" ", result);
+        String reconstructedMessage = String.join(" ", result);
+        logger.debug("Mensaje reconstruido: {}", reconstructedMessage);
+        return reconstructedMessage;
     }
 }
