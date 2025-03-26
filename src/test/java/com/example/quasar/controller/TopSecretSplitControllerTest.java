@@ -38,9 +38,11 @@ class TopSecretSplitControllerTest {
     @Test
     void testPostSatelliteData_Created() throws Exception {
         SatelliteData kenobi = new SatelliteData();
+        kenobi.setName("kenobi");
         kenobi.setDistance(100f);
         kenobi.setMessage(Arrays.asList("este", "", "", "mensaje", ""));
-
+        kenobi.setVersion(1);
+        
         mockMvc.perform(post("/topsecret_split/kenobi")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(kenobi)))
@@ -50,8 +52,10 @@ class TopSecretSplitControllerTest {
     @Test
     void testPostSatelliteData_Conflict() throws Exception {
         SatelliteData kenobi = new SatelliteData();
+        kenobi.setName("kenobi");
         kenobi.setDistance(100f);
         kenobi.setMessage(Arrays.asList("este", "", "", "mensaje", ""));
+        kenobi.setVersion(1);
 
         mockMvc.perform(post("/topsecret_split/kenobi")
                         .contentType(MediaType.APPLICATION_JSON)

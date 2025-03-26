@@ -40,29 +40,35 @@ class TopSecretSplitControllerIntegrationTest {
         // Simular envíos de datos para los tres satélites
 
         SatelliteData kenobi = new SatelliteData();
+        kenobi.setName("kenobi");
         kenobi.setDistance(100f);
         kenobi.setMessage(Arrays.asList("este", "", "", "mensaje", ""));
+        kenobi.setVersion(1);
         // Se fuerza el nombre desde la URL en el controlador, pero se puede enviar vacío o cualquier valor
         mockMvc.perform(post("/topsecret_split/kenobi")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(kenobi)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         SatelliteData skywalker = new SatelliteData();
+        skywalker.setName("skywalker");
         skywalker.setDistance(115.5f);
         skywalker.setMessage(Arrays.asList("", "es", "", "", "secreto"));
+        skywalker.setVersion(1);
         mockMvc.perform(post("/topsecret_split/skywalker")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(skywalker)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         SatelliteData sato = new SatelliteData();
+        sato.setName("sato");
         sato.setDistance(142.7f);
         sato.setMessage(Arrays.asList("este", "", "un", "", ""));
+        sato.setVersion(1);
         mockMvc.perform(post("/topsecret_split/sato")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(sato)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         // Realizar GET para procesar la información
         mockMvc.perform(get("/topsecret_split"))
@@ -76,12 +82,14 @@ class TopSecretSplitControllerIntegrationTest {
     void testTopSecretSplitNotFoundWhenIncomplete() throws Exception {
         // Solo se envía la información de un satélite
         SatelliteData kenobi = new SatelliteData();
+        kenobi.setName("kenobi");
         kenobi.setDistance(100f);
         kenobi.setMessage(Arrays.asList("este", "", "", "mensaje", ""));
+        kenobi.setVersion(1);
         mockMvc.perform(post("/topsecret_split/kenobi")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(kenobi)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         // Al realizar GET, se espera un 404 por falta de información completa
         mockMvc.perform(get("/topsecret_split"))
