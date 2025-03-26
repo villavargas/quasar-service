@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QuasarService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">quasar-service</a> &gt; <a href="index.source.html" class="el_package">com.example.quasar.service</a> &gt; <span class="el_source">QuasarService.java</span></div><h1>QuasarService.java</h1><pre class="source lang-java linenums">package com.example.quasar.service;
+
+import com.example.quasar.model.Position;
+import com.example.quasar.model.SatelliteData;
+import com.example.quasar.model.SatelliteData;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+<span class="fc" id="L12">public class QuasarService {</span>
+
+    // Coordenadas conocidas de los satélites (según reto)
+<span class="fc" id="L15">    private final Position kenobiPos = new Position(-500f, -200f);</span>
+<span class="fc" id="L16">    private final Position skywalkerPos = new Position(100f, -100f);</span>
+<span class="fc" id="L17">    private final Position satoPos = new Position(500f, 100f);</span>
+
+    /**
+     * Calcula la posición del emisor a partir de las distancias recibidas.
+     * Se utiliza una aproximación mediante trilateración.
+     */
+    public Position getLocation(List&lt;?&gt; satellites) {
+        // Extraer distancias basadas en el nombre (compatibilidad para Satellite y SatelliteData)
+<span class="fc" id="L25">        Float dKenobi = null, dSkywalker = null, dSato = null;</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        for (Object s : satellites) {</span>
+<span class="fc" id="L27">            String name = &quot;&quot;;</span>
+<span class="fc" id="L28">            Float distance = null;</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">            if (s instanceof com.example.quasar.model.SatelliteData) {</span>
+<span class="fc" id="L30">                com.example.quasar.model.SatelliteData sat = (com.example.quasar.model.SatelliteData) s;</span>
+<span class="fc" id="L31">                name = sat.getName();</span>
+<span class="fc" id="L32">                distance = sat.getDistance();</span>
+<span class="pc bnc" id="L33" title="All 2 branches missed.">            } else if (s instanceof com.example.quasar.model.SatelliteData) {</span>
+<span class="nc" id="L34">                com.example.quasar.model.SatelliteData sat = (com.example.quasar.model.SatelliteData) s;</span>
+<span class="nc" id="L35">                name = sat.getName();</span>
+<span class="nc" id="L36">                distance = sat.getDistance();</span>
+            }
+<span class="fc bfc" id="L38" title="All 2 branches covered.">            if (&quot;kenobi&quot;.equalsIgnoreCase(name)) {</span>
+<span class="fc" id="L39">                dKenobi = distance;</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">            } else if (&quot;skywalker&quot;.equalsIgnoreCase(name)) {</span>
+<span class="fc" id="L41">                dSkywalker = distance;</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">            } else if (&quot;sato&quot;.equalsIgnoreCase(name)) {</span>
+<span class="fc" id="L43">                dSato = distance;</span>
+            }
+<span class="fc" id="L45">        }</span>
+<span class="pc bpc" id="L46" title="3 of 6 branches missed.">        if (dKenobi == null || dSkywalker == null || dSato == null) {</span>
+<span class="nc" id="L47">            return null;</span>
+        }
+
+        // Coordenadas de cada satélite
+<span class="fc" id="L51">        float x1 = kenobiPos.getX(), y1 = kenobiPos.getY();</span>
+<span class="fc" id="L52">        float x2 = skywalkerPos.getX(), y2 = skywalkerPos.getY();</span>
+<span class="fc" id="L53">        float x3 = satoPos.getX(), y3 = satoPos.getY();</span>
+
+<span class="fc" id="L55">        float d1 = dKenobi;</span>
+<span class="fc" id="L56">        float d2 = dSkywalker;</span>
+<span class="fc" id="L57">        float d3 = dSato;</span>
+
+        // Resolver el sistema de dos ecuaciones lineales:
+<span class="fc" id="L60">        float A = 2 * (x2 - x1);</span>
+<span class="fc" id="L61">        float B = 2 * (y2 - y1);</span>
+<span class="fc" id="L62">        float C = (float) (Math.pow(d1, 2) - Math.pow(d2, 2) - Math.pow(x1, 2) + Math.pow(x2, 2) - Math.pow(y1, 2) + Math.pow(y2, 2));</span>
+
+<span class="fc" id="L64">        float D = 2 * (x3 - x2);</span>
+<span class="fc" id="L65">        float E = 2 * (y3 - y2);</span>
+<span class="fc" id="L66">        float F = (float) (Math.pow(d2, 2) - Math.pow(d3, 2) - Math.pow(x2, 2) + Math.pow(x3, 2) - Math.pow(y2, 2) + Math.pow(y3, 2));</span>
+
+<span class="fc" id="L68">        float denominator = A * E - B * D;</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (denominator == 0) {</span>
+<span class="nc" id="L70">            return null;</span>
+        }
+<span class="fc" id="L72">        float x = (C * E - B * F) / denominator;</span>
+<span class="fc" id="L73">        float y = (A * F - C * D) / denominator;</span>
+
+<span class="fc" id="L75">        return new Position(x, y);</span>
+    }
+
+    /**
+     * Reconstruye el mensaje a partir de los arreglos de palabras.
+     */
+    public String getMessage(List&lt;List&lt;String&gt;&gt; messages) {
+<span class="pc bpc" id="L82" title="2 of 4 branches missed.">        if (messages == null || messages.isEmpty()) {</span>
+<span class="nc" id="L83">            return null;</span>
+        }
+<span class="fc" id="L85">        int maxLength = messages.stream().mapToInt(List::size).max().orElse(0);</span>
+<span class="fc" id="L86">        List&lt;String&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        for (int i = 0; i &lt; maxLength; i++) {</span>
+<span class="fc" id="L88">            String word = &quot;&quot;;</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">            for (List&lt;String&gt; msg : messages) {</span>
+<span class="pc bpc" id="L90" title="1 of 4 branches missed.">                if (i &lt; msg.size() &amp;&amp; !msg.get(i).trim().isEmpty()) {</span>
+<span class="fc" id="L91">                    word = msg.get(i).trim();</span>
+<span class="fc" id="L92">                    break;</span>
+                }
+<span class="fc" id="L94">            }</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">            if (!word.isEmpty()) {</span>
+<span class="fc" id="L96">                result.add(word);</span>
+            }
+        }
+<span class="fc" id="L99">        return String.join(&quot; &quot;, result);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SatelliteData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">quasar-service</a> &gt; <a href="index.source.html" class="el_package">com.example.quasar.model</a> &gt; <span class="el_source">SatelliteData.java</span></div><h1>SatelliteData.java</h1><pre class="source lang-java linenums">package com.example.quasar.model;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import java.util.List;
+
+@Entity
+@Table(name = &quot;satellite_data&quot;)
+<span class="fc" id="L9">public class SatelliteData {</span>
+
+    @Id
+    @NotBlank(message = &quot;El nombre del satélite es obligatorio&quot;)
+    private String name;  // Kenobi, Skywalker o Sato
+
+    @NotNull(message = &quot;La distancia es obligatoria&quot;)
+    private Float distance;
+
+    @ElementCollection
+    @CollectionTable(name = &quot;satellite_message&quot;, joinColumns = @JoinColumn(name = &quot;satellite_name&quot;))
+    @Column(name = &quot;word&quot;)
+    @NotEmpty(message = &quot;El mensaje no puede estar vacío&quot;)
+    private List&lt;String&gt; message;
+    
+    // Campo para manejo optimista de concurrencia
+    @Version
+    private Integer version;
+
+    // Getters &amp; Setters
+<span class="fc" id="L29">    public String getName() { return name; }</span>
+<span class="fc" id="L30">    public void setName(String name) { this.name = name; }</span>
+
+<span class="fc" id="L32">    public Float getDistance() { return distance; }</span>
+<span class="fc" id="L33">    public void setDistance(Float distance) { this.distance = distance; }</span>
+
+<span class="fc" id="L35">    public List&lt;String&gt; getMessage() { return message; }</span>
+<span class="fc" id="L36">    public void setMessage(List&lt;String&gt; message) { this.message = message; }</span>
+
+<span class="fc" id="L38">    public Integer getVersion() { return version; }</span>
+<span class="fc" id="L39">    public void setVersion(Integer version) { this.version = version; }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

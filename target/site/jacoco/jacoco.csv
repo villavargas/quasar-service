@@ -1,0 +1,10 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+quasar-service,com.example.quasar.model,TopSecretResponse,26,0,0,0,9,0,6,0,6,0
+quasar-service,com.example.quasar.model,Position,11,15,0,0,3,6,3,3,3,3
+quasar-service,com.example.quasar.model,TopSecretRequest,10,0,0,0,4,0,3,0,3,0
+quasar-service,com.example.quasar.model,SatelliteData,0,31,0,0,0,9,0,9,0,9
+quasar-service,com.example.quasar.exception,GlobalExceptionHandler,19,35,0,0,3,8,1,3,1,3
+quasar-service,com.example.quasar.controller,TopSecretController,43,6,6,0,10,3,4,1,1,1
+quasar-service,com.example.quasar.controller,TopSecretSplitController,67,34,9,1,15,10,6,2,1,2
+quasar-service,com.example.quasar.service,QuasarService,18,320,13,21,6,51,12,8,0,3
+quasar-service,com.example.quasar,QuasarApplication,5,3,0,0,2,1,1,1,1,1
