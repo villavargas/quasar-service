@@ -1,5 +1,9 @@
-FROM openjdk:17
+FROM openjdk:17-jdk-slim
+
 WORKDIR /app
-COPY --from=build target/quasar-service-1.0.0.jar app.jar
+
+COPY target/quasar-service-1.0.0.jar app.jar
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+CMD ["java", "-jar", "app.jar"]
