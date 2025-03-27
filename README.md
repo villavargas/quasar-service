@@ -16,24 +16,24 @@ Este es un microservicio REST desarrollado en **Java Spring Boot** que permite d
 ```
 quasar-service/
 ├── src/main/java/com/example/quasar
-│   ├── controller/       # Controladores REST
-│   ├── model/            # Modelos de datos
-│   ├── repository/       # Persistencia con JPA
-│   ├── service/          # Lógica de negocio
-│   ├── exception/        # Manejo global de excepciones
-│   ├── QuasarApplication.java  # Clase principal
+�?  ├── controller/       # Controladores REST
+�?  ├── model/            # Modelos de datos
+�?  ├── repository/       # Persistencia con JPA
+�?  ├── service/          # Lógica de negocio
+�?  ├── exception/        # Manejo global de excepciones
+�?  ├── QuasarApplication.java  # Clase principal
 ├── src/main/resources
-│   ├── application.properties  # Configuración del servicio
+�?  ├── application.properties  # Configuración del servicio
 ├── src/test/java/com/example/quasar
-│   ├── controller/        # Pruebas de integración
-│   ├── service/           # Pruebas unitarias
+�?  ├── controller/        # Pruebas de integración
+�?  ├── service/           # Pruebas unitarias
 ├── pom.xml               # Dependencias Maven
 ```
 
 ##  Instalación y Ejecución
 ### 1️⃣ Clonar el repositorio
 ```sh
-git clone https://github.com/TU_REPOSITORIO/quasar-service.git
+git clone https://github.com/villavargas/quasar-service
 cd quasar-service
 ```
 ### 2️⃣ Construir el proyecto
@@ -46,6 +46,8 @@ java -jar target/quasar-service-1.0.0.jar
 ```
 El servicio estará disponible en **http://localhost:8080**.
 
+Se despliega en RENDER: http://localhost:8080/topsecret
+
 ##  Documentación API (Swagger)
 Una vez en ejecución, puedes acceder a **Swagger UI** en:
 ```
@@ -55,6 +57,7 @@ http://localhost:8080/swagger-ui/index.html
 ##  Endpoints Disponibles
 ### 1️⃣ **Obtener ubicación y mensaje en un solo request**
 **POST /topsecret**
+
 ```json
 {
   "satellites": [
@@ -110,6 +113,5 @@ mvn test
 
 
 
-## 📄 Licencia
-Este proyecto está bajo la licencia **MIT**.
+
 
