@@ -52,9 +52,6 @@ public class QuasarService {
         if (dKenobi == null || dSkywalker == null || dSato == null) {
             return null;
         }
-        
-        
-        
 
         // Coordenadas de cada satélite
         double[] x1 = {kenobiPos.getX(), kenobiPos.getY()};
@@ -72,21 +69,7 @@ public class QuasarService {
         TrilaterationFunction trilaterationFunction = new TrilaterationFunction(positions, distances);
         NonLinearLeastSquaresSolver nSolver = new NonLinearLeastSquaresSolver(trilaterationFunction, new LevenbergMarquardtOptimizer());
 
-        
-   /*     float A = 2 * (x2 - x1);
-        float B = 2 * (y2 - y1);
-        float C = (float) (Math.pow(d1, 2) - Math.pow(d2, 2) - Math.pow(x1, 2) + Math.pow(x2, 2) - Math.pow(y1, 2) + Math.pow(y2, 2));
-
-        float D = 2 * (x3 - x2);
-        float E = 2 * (y3 - y2);
-        float F = (float) (Math.pow(d2, 2) - Math.pow(d3, 2) - Math.pow(x2, 2) + Math.pow(x3, 2) - Math.pow(y2, 2) + Math.pow(y3, 2));
-
-        float denominator = A * E - B * D;
-        if (denominator == 0) {
-            return null;
-        }
-        float x = (C * E - B * F) / denominator;
-        float y = (A * F - C * D) / denominator;*/
+   
         
         logger.debug("Ubicación calculada: x={}, y={}", nSolver.solve().getPoint().toArray());
 

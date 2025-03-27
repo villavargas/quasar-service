@@ -2,7 +2,7 @@
 
 Este es un microservicio REST desarrollado en **Java Spring Boot** que permite determinar la posición y el mensaje transmitido por una nave espacial a partir de datos recibidos desde satélites.
 
-## 🚀 Características
+##  Características
 - API REST para procesar datos de satélites
 - Cálculo de ubicación mediante trilateración
 - Reconstrucción de mensajes incompletos
@@ -12,7 +12,7 @@ Este es un microservicio REST desarrollado en **Java Spring Boot** que permite d
 - Pruebas unitarias e integrales con **JUnit 5 y MockMvc**
 - Desplegable en **AWS** y **Google App Engine**
 
-## 📁 Estructura del Proyecto
+##  Estructura del Proyecto
 ```
 quasar-service/
 ├── src/main/java/com/example/quasar
@@ -30,7 +30,7 @@ quasar-service/
 ├── pom.xml               # Dependencias Maven
 ```
 
-## 🔧 Instalación y Ejecución
+##  Instalación y Ejecución
 ### 1️⃣ Clonar el repositorio
 ```sh
 git clone https://github.com/TU_REPOSITORIO/quasar-service.git
@@ -48,13 +48,13 @@ El servicio estará disponible localmente en: **http://localhost:8080**.
 
 En desarrollo en: **https://quasar-service.onrender.com**.
 
-## 📝 Documentación API (Swagger)
+##  Documentación API (Swagger)
 Una vez en ejecución, puedes acceder a **Swagger UI** en:
 ```
 http://localhost:8080/swagger-ui/index.html
 ```
 
-## 📌 Endpoints Disponibles
+##  Endpoints Disponibles
 ### 1️⃣ **Obtener ubicación y mensaje en un solo request**
 **POST /topsecret**
 ```json
@@ -94,13 +94,13 @@ http://localhost:8080/swagger-ui/index.html
 }
 ```
 
-## 🧪 Pruebas
+##  Pruebas
 Para ejecutar las pruebas unitarias e integrales:
 ```sh
 mvn test
 ```
 
-## ☁️ Despliegue en AWS
+##  Despliegue en AWS
 1. Construir la imagen Docker:
    ```sh
    docker build -t quasar-service .
@@ -112,6 +112,6 @@ mvn test
 
 
 
-## 📄 Licencia
+##  Licencia
 Este proyecto está bajo la licencia **MIT**.
 

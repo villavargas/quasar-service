@@ -52,78 +52,61 @@ import java.util.List;
 <span class="pc bpc" id="L52" title="3 of 6 branches missed.">        if (dKenobi == null || dSkywalker == null || dSato == null) {</span>
 <span class="nc" id="L53">            return null;</span>
         }
-        
-        
-        
 
         // Coordenadas de cada satélite
-<span class="fc" id="L60">        double[] x1 = {kenobiPos.getX(), kenobiPos.getY()};</span>
-<span class="fc" id="L61">        double[] x2 = {skywalkerPos.getX(), skywalkerPos.getY()};</span>
-<span class="fc" id="L62">        double[] x3 = {satoPos.getX(), satoPos.getY()};</span>
+<span class="fc" id="L57">        double[] x1 = {kenobiPos.getX(), kenobiPos.getY()};</span>
+<span class="fc" id="L58">        double[] x2 = {skywalkerPos.getX(), skywalkerPos.getY()};</span>
+<span class="fc" id="L59">        double[] x3 = {satoPos.getX(), satoPos.getY()};</span>
         
-<span class="fc" id="L64">        double[][] positions = {x1,x2,x3};</span>
+<span class="fc" id="L61">        double[][] positions = {x1,x2,x3};</span>
 
-<span class="fc" id="L66">        double d1 = dKenobi;</span>
-<span class="fc" id="L67">        double d2 = dSkywalker;</span>
-<span class="fc" id="L68">        double d3 = dSato;</span>
+<span class="fc" id="L63">        double d1 = dKenobi;</span>
+<span class="fc" id="L64">        double d2 = dSkywalker;</span>
+<span class="fc" id="L65">        double d3 = dSato;</span>
         
-<span class="fc" id="L70">        double[] distances = {d1,d2,d3};</span>
+<span class="fc" id="L67">        double[] distances = {d1,d2,d3};</span>
         
-<span class="fc" id="L72">        TrilaterationFunction trilaterationFunction = new TrilaterationFunction(positions, distances);</span>
-<span class="fc" id="L73">        NonLinearLeastSquaresSolver nSolver = new NonLinearLeastSquaresSolver(trilaterationFunction, new LevenbergMarquardtOptimizer());</span>
+<span class="fc" id="L69">        TrilaterationFunction trilaterationFunction = new TrilaterationFunction(positions, distances);</span>
+<span class="fc" id="L70">        NonLinearLeastSquaresSolver nSolver = new NonLinearLeastSquaresSolver(trilaterationFunction, new LevenbergMarquardtOptimizer());</span>
 
+   
         
-   /*     float A = 2 * (x2 - x1);
-        float B = 2 * (y2 - y1);
-        float C = (float) (Math.pow(d1, 2) - Math.pow(d2, 2) - Math.pow(x1, 2) + Math.pow(x2, 2) - Math.pow(y1, 2) + Math.pow(y2, 2));
+<span class="fc" id="L74">        logger.debug(&quot;Ubicación calculada: x={}, y={}&quot;, nSolver.solve().getPoint().toArray());</span>
 
-        float D = 2 * (x3 - x2);
-        float E = 2 * (y3 - y2);
-        float F = (float) (Math.pow(d2, 2) - Math.pow(d3, 2) - Math.pow(x2, 2) + Math.pow(x3, 2) - Math.pow(y2, 2) + Math.pow(y3, 2));
-
-        float denominator = A * E - B * D;
-        if (denominator == 0) {
-            return null;
-        }
-        float x = (C * E - B * F) / denominator;
-        float y = (A * F - C * D) / denominator;*/
+<span class="fc" id="L76">        double[] points = nSolver.solve().getPoint().toArray();</span>
         
-<span class="fc" id="L91">        logger.debug(&quot;Ubicación calculada: x={}, y={}&quot;, nSolver.solve().getPoint().toArray());</span>
-
-<span class="fc" id="L93">        double[] points = nSolver.solve().getPoint().toArray();</span>
+<span class="fc" id="L78">        float x = (float)points[0];</span>
+<span class="fc" id="L79">        float y = (float)points[1];</span>
         
-<span class="fc" id="L95">        float x = (float)points[0];</span>
-<span class="fc" id="L96">        float y = (float)points[1];</span>
-        
-<span class="fc" id="L98">        return new Position(x, y);</span>
+<span class="fc" id="L81">        return new Position(x, y);</span>
     }
 
     /**
      * Reconstruye el mensaje a partir de los arreglos de palabras.
      */
     public String getMessage(List&lt;List&lt;String&gt;&gt; messages) {
-<span class="fc" id="L105">    	logger.info(&quot;Iniciando reconstrucción del mensaje&quot;);</span>
-<span class="pc bpc" id="L106" title="2 of 4 branches missed.">        if (messages == null || messages.isEmpty()) {</span>
-<span class="nc" id="L107">        	logger.error(&quot;No se recibieron mensajes válidos para reconstrucción&quot;);</span>
-<span class="nc" id="L108">            return null;</span>
+<span class="fc" id="L88">    	logger.info(&quot;Iniciando reconstrucción del mensaje&quot;);</span>
+<span class="pc bpc" id="L89" title="2 of 4 branches missed.">        if (messages == null || messages.isEmpty()) {</span>
+<span class="nc" id="L90">        	logger.error(&quot;No se recibieron mensajes válidos para reconstrucción&quot;);</span>
+<span class="nc" id="L91">            return null;</span>
         }
-<span class="fc" id="L110">        int maxLength = messages.stream().mapToInt(List::size).max().orElse(0);</span>
-<span class="fc" id="L111">        List&lt;String&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L112" title="All 2 branches covered.">        for (int i = 0; i &lt; maxLength; i++) {</span>
-<span class="fc" id="L113">            String word = &quot;&quot;;</span>
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">            for (List&lt;String&gt; msg : messages) {</span>
-<span class="pc bpc" id="L115" title="1 of 4 branches missed.">                if (i &lt; msg.size() &amp;&amp; !msg.get(i).trim().isEmpty()) {</span>
-<span class="fc" id="L116">                    word = msg.get(i).trim();</span>
-<span class="fc" id="L117">                    break;</span>
+<span class="fc" id="L93">        int maxLength = messages.stream().mapToInt(List::size).max().orElse(0);</span>
+<span class="fc" id="L94">        List&lt;String&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        for (int i = 0; i &lt; maxLength; i++) {</span>
+<span class="fc" id="L96">            String word = &quot;&quot;;</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">            for (List&lt;String&gt; msg : messages) {</span>
+<span class="pc bpc" id="L98" title="1 of 4 branches missed.">                if (i &lt; msg.size() &amp;&amp; !msg.get(i).trim().isEmpty()) {</span>
+<span class="fc" id="L99">                    word = msg.get(i).trim();</span>
+<span class="fc" id="L100">                    break;</span>
                 }
-<span class="fc" id="L119">            }</span>
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">            if (!word.isEmpty()) {</span>
-<span class="fc" id="L121">                result.add(word);</span>
+<span class="fc" id="L102">            }</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">            if (!word.isEmpty()) {</span>
+<span class="fc" id="L104">                result.add(word);</span>
             }
         }
-<span class="fc" id="L124">        String reconstructedMessage = String.join(&quot; &quot;, result);</span>
-<span class="fc" id="L125">        logger.debug(&quot;Mensaje reconstruido: {}&quot;, reconstructedMessage);</span>
-<span class="fc" id="L126">        return reconstructedMessage;</span>
+<span class="fc" id="L107">        String reconstructedMessage = String.join(&quot; &quot;, result);</span>
+<span class="fc" id="L108">        logger.debug(&quot;Mensaje reconstruido: {}&quot;, reconstructedMessage);</span>
+<span class="fc" id="L109">        return reconstructedMessage;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
