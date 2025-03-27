@@ -9,7 +9,6 @@ import java.util.List;
 <span class="fc" id="L9">public class SatelliteData {</span>
 
     @Id
-    @NotBlank(message = &quot;El nombre del satélite es obligatorio&quot;)
     private String name;  // Kenobi, Skywalker o Sato
 
     @NotNull(message = &quot;La distancia es obligatoria&quot;)
@@ -26,16 +25,16 @@ import java.util.List;
     private Integer version;
 
     // Getters &amp; Setters
-<span class="fc" id="L29">    public String getName() { return name; }</span>
-<span class="fc" id="L30">    public void setName(String name) { this.name = name; }</span>
+<span class="fc" id="L28">    public String getName() { return name; }</span>
+<span class="fc" id="L29">    public void setName(String name) { this.name = name; }</span>
 
-<span class="fc" id="L32">    public Float getDistance() { return distance; }</span>
-<span class="fc" id="L33">    public void setDistance(Float distance) { this.distance = distance; }</span>
+<span class="fc" id="L31">    public Float getDistance() { return distance; }</span>
+<span class="fc" id="L32">    public void setDistance(Float distance) { this.distance = distance; }</span>
 
-<span class="fc" id="L35">    public List&lt;String&gt; getMessage() { return message; }</span>
-<span class="fc" id="L36">    public void setMessage(List&lt;String&gt; message) { this.message = message; }</span>
+<span class="fc" id="L34">    public List&lt;String&gt; getMessage() { return message; }</span>
+<span class="fc" id="L35">    public void setMessage(List&lt;String&gt; message) { this.message = message; }</span>
 
-<span class="fc" id="L38">    public Integer getVersion() { return version; }</span>
-<span class="fc" id="L39">    public void setVersion(Integer version) { this.version = version; }</span>
+<span class="fc" id="L37">    public Integer getVersion() { return version; }</span>
+<span class="fc" id="L38">    public void setVersion(Integer version) { this.version = version; }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

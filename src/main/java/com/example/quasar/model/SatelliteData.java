@@ -9,7 +9,6 @@ import java.util.List;
 public class SatelliteData {
 
     @Id
-    @NotBlank(message = "El nombre del satélite es obligatorio")
     private String name;  // Kenobi, Skywalker o Sato
 
     @NotNull(message = "La distancia es obligatoria")
