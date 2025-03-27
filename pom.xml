@@ -230,5 +230,7 @@
                 </configuration>
             </plugin>
         </plugins>
+          <finalName>quasar-service</finalName>
+
     </build>
 </project>
